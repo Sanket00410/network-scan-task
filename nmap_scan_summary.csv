@@ -1,0 +1,4 @@
+Host,IP,Open Ports,Risk Level
+Windows Host Adapter,192.168.56.1,"135/tcp (MSRPC), 139/tcp (NetBIOS)",Medium
+VirtualBox VM,192.168.56.100,None (All filtered),Low
+Ubuntu VM,192.168.56.101,None (All closed),Low

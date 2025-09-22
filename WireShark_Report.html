@@ -1,0 +1,73 @@
+<html>
+<head>
+    <title>Wireshark Packet Analysis Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 30px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .risk-low { background-color: #c6efce; }
+        .risk-medium { background-color: #ffeb9c; }
+        .risk-high { background-color: #f4c7c3; }
+        code { background-color: #eee; padding: 2px 4px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Wireshark Packet Analysis Report</h1>
+
+    <h2>Capture Summary</h2>
+    <ul>
+        <li><strong>Interface:</strong> eth0 / Wi-Fi</li>
+        <li><strong>Capture Duration:</strong> 00:15:30</li>
+        <li><strong>Total Packets:</strong> 12,345</li>
+        <li><strong>File Name:</strong> capture.pcapng</li>
+    </ul>
+
+    <h2>Filtered Analysis</h2>
+    <p>Filters applied:</p>
+    <ul>
+        <li>By IP: <code>ip.addr == 192.168.*.*</code></li>
+        <li>By TCP port: <code>tcp.port == 135</code></li>
+        <li>By UDP port: <code>udp.port == 53</code></li>
+    </ul>
+
+    <h2>Interesting Packets / Observations</h2>
+    <table>
+        <tr>
+            <th>Time</th>
+            <th>Source IP</th>
+            <th>Destination IP</th>
+            <th>Protocol</th>
+            <th>Info</th>
+            <th>Risk Level</th>
+        </tr>
+        <!-- Example packet rows -->
+        <tr class="risk-medium">
+            <td>0.001 sec</td>
+            <td>192.168.*.*</td>
+            <td>192.168.*.*</td>
+            <td>TCP</td>
+            <td>SYN to port 135 (MSRPC)</td>
+            <td>Medium</td>
+        </tr>
+        <tr class="risk-low">
+            <td>0.010 sec</td>
+            <td>192.168.*.*</td>
+            <td>192.168.*.*</td>
+            <td>TCP</td>
+            <td>RST to closed port</td>
+            <td>Low</td>
+        </tr>
+        <!-- Add more packet rows here -->
+    </table>
+
+    <h2>Recommendations / Observations</h2>
+    <ul>
+        <li>Monitor repeated SYN scans or unusual packets to ports like 135, 139, 445.</li>
+        <li>Ensure VMs have proper firewall rules to block unnecessary incoming connections.</li>
+        <li>Disable legacy services (SMB v1, NetBIOS) if not required.</li>
+        <li>Consider segmenting your VM network from main LAN for sensitive testing.</li>
+    </ul>
+</body>
+</html>

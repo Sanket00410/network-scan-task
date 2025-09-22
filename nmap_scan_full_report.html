@@ -1,0 +1,96 @@
+
+<html>
+<head>
+    <title>Nmap Scan Full Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 30px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .risk-low { background-color: #c6efce; }
+        .risk-medium { background-color: #ffeb9c; }
+        .risk-high { background-color: #f4c7c3; }
+    </style>
+</head>
+<body>
+    <h1>Nmap Scan Full Report</h1>
+    
+    <h2>Scan Summary Table</h2>
+    <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Host</th>
+      <th>IP</th>
+      <th>Open Ports</th>
+      <th>Risk Level</th>
+      <th>Risk Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Windows Host Adapter</td>
+      <td>192.168.*.*</td>
+      <td>135/tcp (MSRPC), 139/tcp (NetBIOS)</td>
+      <td>Medium</td>
+      <td>Exposes Windows RPC and NetBIOS services. Attackers can exploit these for lateral movement or SMB relay attacks if not firewalled or restricted.</td>
+    </tr>
+    <tr>
+      <td>VirtualBox VM</td>
+      <td>192.168.*.*</td>
+      <td>None (All filtered)</td>
+      <td>Low</td>
+      <td>All ports filtered by firewall. Minimal exposure, host not offering services.</td>
+    </tr>
+    <tr>
+      <td>Ubuntu VM</td>
+      <td>192.168.*.*</td>
+      <td>None (All closed)</td>
+      <td>Low</td>
+      <td>Host responds but has no listening services. Minimal exposure, only confirms host existence.</td>
+    </tr>
+  </tbody>
+</table>
+    
+    <h2>🖥️ Scan Results Interpretation</h2>
+    <h3>1. 192.168.*.*</h3>
+    <p><strong>Open ports:</strong></p>
+    <ul>
+        <li>135/tcp → MSRPC (Microsoft RPC) → Windows remote procedure call service. Used by Windows services for communication. Attackers often target it for privilege escalation or lateral movement.</li>
+        <li>139/tcp → NetBIOS Session Service → Used for Windows file sharing (SMB over NetBIOS). Legacy, risky if exposed outside LAN.</li>
+    </ul>
+    <p><strong>Risk:</strong> These are Windows services, typical for a Windows host. If exposed externally (Internet) → critical risk. On local VM-only host network → lower risk, but still something to manage.</p>
+    <p><strong>MAC address:</strong> 0A:00:27:00:00:0C → VirtualBox Host-Only adapter.</p>
+    
+    <h3>2. 192.168.*.*</h3>
+    <p>All 1000 ports filtered → firewall or VM networking mode blocking probes. Host is alive but no response from scanned ports.</p>
+    <p><strong>MAC address:</strong> 08:00:27:1B:98:FA → Oracle VirtualBox virtual NIC.</p>
+    <p><strong>Risk:</strong> Very low exposure; host firewall is working.</p>
+    
+    <h3>3. 192.168.*.* (ubuntu-VirtualBox)</h3>
+    <p>All 1000 ports closed (reset) → host responds with RST, no services listening.</p>
+    <p><strong>Risk:</strong> Minimal exposure, only confirms host existence.</p>
+    
+    <h2>🔍 What this tells you</h2>
+    <p>You have 3 hosts up:</p>
+    <ul>
+        <li>Host-only adapter gateway (192.168.*.*, Windows services exposed).</li>
+        <li>VirtualBox VM (192.168.*.*) with all ports firewalled.</li>
+        <li>Linux VM (192.168.*.*) with no listening services.</li>
+    </ul>
+    <p>Only “interesting” finding = 135/tcp and 139/tcp open on the host adapter.</p>
+    
+    <h2>🛡️ Next Steps (Security Hardening)</h2>
+    <h3>Windows host (192.168.*.*)</h3>
+    <ul>
+        <li>Disable SMB/NetBIOS if not needed.</li>
+        <li>Windows: Control Panel → Network → Adapter Properties → Uncheck File and Printer Sharing and Client for Microsoft Networks.</li>
+        <li>Block port 135 and 139 via firewall if VMs don’t need them. Example PowerShell commands:<br>
+            <code>
+            New-NetFirewallRule -DisplayName "Block RPC" -Direction Inbound -LocalPort 135 -Protocol TCP -Action Block<br>
+            New-NetFirewallRule -DisplayName "Block NetBIOS" -Direction Inbound -LocalPort 139 -Protocol TCP -Action Block
+            </code>
+        </li>
+    </ul>
+</body>
+</html>
