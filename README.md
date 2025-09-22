@@ -23,13 +23,13 @@ Step 2: TCP SYN Scan
 
 Performed SYN scan to discover open ports:
 
-sudo nmap -sS 192.168.*.0/24 -oA nmap_scan
+    sudo nmap -sS 192.168.*.0/24 -oA nmap_scan
 
 Step 3: Service Detection
 
 Detected services and versions (optional):
 
-sudo nmap -sS -sV 192.168.*.*
+    sudo nmap -sS -sV 192.168.*.*
 
 Step 4: Save Results
 
