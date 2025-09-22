@@ -46,3 +46,34 @@ VirtualBox VM	192.168.*.*	None (All filtered)	Low	Firewall blocks all ports. Min
 Ubuntu VM	192.168.*.*	None (All closed)	Low	Host alive but no services listening. Minimal exposure.
 
 (Refer to nmap_scan_detailed_report.html for full interpretation.)
+
+**Wireshark Analysis**
+Capture file: capture.pcapng
+Observed interesting packets using filters:
+ip.addr == 192.168.*.*
+tcp.port == 135
+Example packets table included in wireshark_analysis_report.html
+
+**Recommendations**:
+Monitor unusual SYN packets to sensitive ports
+Ensure firewall rules block unnecessary connections
+Disable legacy services (SMB v1, NetBIOS)
+Segment VM networks from main LAN
+
+**Security Hardening Recommendations**
+Disable unused services (e.g., SMB/NetBIOS if not needed).
+Block high-risk ports via firewall (e.g., 135, 139).
+Restrict access to sensitive services to internal or trusted IPs only.
+Keep systems updated and patched.
+Monitor network for unusual traffic patterns.
+
+**Files in this Repository**
+nmap_scan_summary.csv – CSV summary of Nmap scan results.
+nmap_scan_full_report.html – Full report with interpretation and recommendations.
+wireshark_analysis_report.html – Optional Wireshark packet analysis report.
+Capture.pcapng – Optional raw Wireshark capture file.
+
+**Note**
+All tools used are free and open-source.
+Task performed safely on local VM network (no external scanning).
+Self-research and debugging applied to resolve issues encountered during scanning.
