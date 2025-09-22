@@ -31,7 +31,7 @@ Detected services and versions (optional):
 
     sudo nmap -sS -sV 192.168.*.*
 
-Step 4: Save Results
+Step 3: Save Results
 
 CSV summary: nmap_scan_summary.csv
 
